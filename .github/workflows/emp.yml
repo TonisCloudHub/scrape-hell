@@ -3,8 +3,8 @@ on:
   push:
     paths:
       - '.github/workflows/emp.yml'
-  schedule:
-    - cron: '*/30 * * * *' # Every 30 minutes
+#  schedule:
+#    - cron: '*/30 * * * *' # Every 30 minutes
 
 
 jobs:
