@@ -3,8 +3,8 @@ on:
   push:
     paths:
       - '.github/workflows/emp.yml'
-#  schedule:
-#    - cron: '*/30 * * * *' # Every 30 minutes
+  schedule:
+    - cron: '*/30 * * * *' # Every 30 minutes
 
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Scraper
         run : |
-          node --no-warnings tonics-scrape/index.js -b -i -c 3
+          sudo node --no-warnings tonics-scrape/index.js -b -i -c 3
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
