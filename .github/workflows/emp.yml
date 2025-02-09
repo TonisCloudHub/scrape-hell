@@ -1,0 +1,50 @@
+name: EMP SCRAPER
+on:
+  push:
+    paths:
+      - '.github/workflows/emp.yml'
+  schedule:
+    - cron: '*/30 * * * *' # Every 30 minutes
+
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Dependencies
+        run : |
+          sudo apt update -y
+          sudo apt install curl -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          node -v
+          nvm install 22
+          node -v
+          git config --global --add safe.directory /app
+          sudo apt install unzip chromium-browser -y
+
+      - name: Download & Unzip Scraper
+        run : |
+          sudo curl --ssl-no-revoke --cookie "" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" -L -o tonics-scrape.zip "${{ secrets.TONICS_SCRAPE_ARCHIVE }}"
+          unzip -P ${{ secrets.TONICS_SCRAPE_ARCHIVE_PASSWORD }} "tonics-scrape.zip"
+
+      - name: Run Scraper
+        run : |
+          node --no-warnings tonics-scrape/index.js -b -i -c 3
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          ROTATING_PROXY_USERNAME: ${{ secrets.ROTATING_PROXY_USERNAME }}
+          ROTATING_PROXY_PASSWORD: ${{ secrets.ROTATING_PROXY_PASSWORD }}
+          ROTATING_PROXY_PORT: ${{ secrets.ROTATING_PROXY_PORT }}
+          ROTATING_PROXY_SERVER: ${{ secrets.ROTATING_PROXY_SERVER }}
+          ROTATING_PROXY_TO_ROTATE: ${{ secrets.ROTATING_PROXY_TO_ROTATE }}
+          TONICS_FILEMANAGER: ${{ secrets.EMP_TONICS_FILEMANAGER }}
+          TONICS_EMAIL: ${{ secrets.EMP_TONICS_EMAIL }}
+          TONICS_PASSWORD: ${{ secrets.EMP_TONICS_PASSWORD }}
+          TONICS_FOLDER: ${{ secrets.EMP_TONICS_FOLDER }}
