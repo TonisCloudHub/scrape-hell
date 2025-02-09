@@ -11,19 +11,6 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
 
-    env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      ROTATING_PROXY_USERNAME: ${{ secrets.ROTATING_PROXY_USERNAME }}
-      ROTATING_PROXY_PASSWORD: ${{ secrets.ROTATING_PROXY_PASSWORD }}
-      ROTATING_PROXY_PORT: ${{ secrets.ROTATING_PROXY_PORT }}
-      ROTATING_PROXY_SERVER: ${{ secrets.ROTATING_PROXY_SERVER }}
-      ROTATING_PROXY_TO_ROTATE: ${{ secrets.ROTATING_PROXY_TO_ROTATE }}
-      TONICS_FILEMANAGER: ${{ secrets.EMP_TONICS_FILEMANAGER }}
-      TONICS_EMAIL: ${{ secrets.EMP_TONICS_EMAIL }}
-      TONICS_PASSWORD: ${{ secrets.EMP_TONICS_PASSWORD }}
-      TONICS_FOLDER: ${{ secrets.EMP_TONICS_FOLDER }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,4 +35,17 @@ jobs:
 
       - name: Run Scraper
         run : |
-          sudo node --no-warnings tonics-scrape/index.js -b -i -c 3
+          cd tonics-scrape
+          node --no-warnings index.js -b -i -c 3
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          ROTATING_PROXY_USERNAME: ${{ secrets.ROTATING_PROXY_USERNAME }}
+          ROTATING_PROXY_PASSWORD: ${{ secrets.ROTATING_PROXY_PASSWORD }}
+          ROTATING_PROXY_PORT: ${{ secrets.ROTATING_PROXY_PORT }}
+          ROTATING_PROXY_SERVER: ${{ secrets.ROTATING_PROXY_SERVER }}
+          ROTATING_PROXY_TO_ROTATE: ${{ secrets.ROTATING_PROXY_TO_ROTATE }}
+          TONICS_FILEMANAGER: ${{ secrets.EMP_TONICS_FILEMANAGER }}
+          TONICS_EMAIL: ${{ secrets.EMP_TONICS_EMAIL }}
+          TONICS_PASSWORD: ${{ secrets.EMP_TONICS_PASSWORD }}
+          TONICS_FOLDER: ${{ secrets.EMP_TONICS_FOLDER }}
