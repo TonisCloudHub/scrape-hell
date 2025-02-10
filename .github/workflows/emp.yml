@@ -34,9 +34,8 @@ jobs:
           unzip -P ${{ secrets.TONICS_SCRAPE_ARCHIVE_PASSWORD }} "tonics-scrape.zip" && rm "tonics-scrape.zip"
 
       - name: Run Scraper
+        working-directory: ./tonics-scrape
         run : |
-          ls -la tonics-scrape
-          cd tonics-scrape
           rm -r Exported/*
           node --no-warnings index.js -b -i -c 3
         env:
