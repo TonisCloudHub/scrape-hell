@@ -32,10 +32,12 @@ jobs:
         run : |
           sudo curl --ssl-no-revoke --cookie "" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" -L -o tonics-scrape.zip "${{ secrets.TONICS_SCRAPE_ARCHIVE }}"
           unzip -P ${{ secrets.TONICS_SCRAPE_ARCHIVE_PASSWORD }} "tonics-scrape.zip" && rm "tonics-scrape.zip"
-          cd tonics-scrape
+          ls -la
 
       - name: Run Scraper
         run : |
+          ls -la
+          cd tonics-scrape
           rm -r Exported/*
           node --no-warnings index.js -b -i -c 3
         env:
