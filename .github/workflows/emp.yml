@@ -15,6 +15,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+          zstd_config: true
+
+      - name: Setup Ollama
+        uses: pydantic/ollama-action@v3
+        with:
+          model: ${{ secrets.OLLAMA_MODEL }}
+
       - name: Set up Dependencies
         run : |
           sudo apt update -y
@@ -36,6 +47,7 @@ jobs:
       - name: Run Scraper
         working-directory: ./tonics-scrape
         run : |
+          npm install
           rm -r Exported/*
           node --no-warnings index.js -b -i -c 3
         env:
@@ -50,3 +62,16 @@ jobs:
           TONICS_EMAIL: ${{ secrets.EMP_TONICS_EMAIL }}
           TONICS_PASSWORD: ${{ secrets.EMP_TONICS_PASSWORD }}
           TONICS_FOLDER: ${{ secrets.EMP_TONICS_FOLDER }}
+          TONICS_DATABASE_HOST: ${{ secrets.TONICS_DATABASE_HOST }}
+          TONICS_DATABASE_PORT: ${{ secrets.TONICS_DATABASE_PORT }}
+          TONICS_DATABASE_NAME: ${{ secrets.TONICS_DATABASE_NAME }}
+          TONICS_DATABASE_USERNAME: ${{ secrets.TONICS_DATABASE_USERNAME }}
+          TONICS_DATABASE_PASSWORD: ${{ secrets.TONICS_DATABASE_PASSWORD }}
+          OLLAMA_HOST: ${{ secrets.OLLAMA_HOST }}
+          OLLAMA_MODEL: ${{ secrets.OLLAMA_MODEL }}
+
+      - name: Update Rclone config
+        uses: AnimMouse/setup-rclone/update-config@v1
+        with:
+          rclone_config_secret_name: RCLONE_CONFIG
+          token: ${{ secrets.GH_PAT }}
