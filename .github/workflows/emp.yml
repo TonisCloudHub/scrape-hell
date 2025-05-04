@@ -19,7 +19,6 @@ jobs:
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
-          zstd_config: true
 
       - name: Setup Ollama
         uses: pydantic/ollama-action@v3
