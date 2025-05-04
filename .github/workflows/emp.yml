@@ -6,6 +6,7 @@ on:
   schedule:
     - cron: '*/30 * * * *' # Every 30 minutes
 
+
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
