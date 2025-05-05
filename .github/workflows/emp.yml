@@ -10,6 +10,7 @@ on:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    timeout-minutes: 3600
 
     steps:
       - name: Checkout repository
