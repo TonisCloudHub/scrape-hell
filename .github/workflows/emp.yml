@@ -48,7 +48,7 @@ jobs:
         run : |
           npm install
           rm -r Exported/*
-          node --no-warnings index.js -b -i -c 3
+          node --no-warnings index.js -b -i -c 2
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
