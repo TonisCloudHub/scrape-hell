@@ -10,7 +10,9 @@ on:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
-    timeout-minutes: 3600
+    concurrency:
+      group: emp-group
+    timeout-minutes: 6600
 
     steps:
       - name: Checkout repository
@@ -20,11 +22,6 @@ jobs:
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
-
-      - name: Setup Ollama
-        uses: pydantic/ollama-action@v3
-        with:
-          model: ${{ secrets.OLLAMA_MODEL }}
 
       - name: Set up Dependencies
         run : |
@@ -49,7 +46,7 @@ jobs:
         run : |
           npm install
           rm -r Exported/*
-          node --no-warnings index.js -b -i -s
+          node --no-warnings index.js -b -i -c 3
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -69,6 +66,8 @@ jobs:
           TONICS_DATABASE_PASSWORD: ${{ secrets.TONICS_DATABASE_PASSWORD }}
           OLLAMA_HOST: ${{ secrets.OLLAMA_HOST }}
           OLLAMA_MODEL: ${{ secrets.OLLAMA_MODEL }}
+          OPEN_ROUTER: ${{ secrets.OPEN_ROUTER }}
+          OPEN_ROUTER_MODEL: ${{ secrets.OPEN_ROUTER_MODEL }}
 
       - name: Update Rclone config
         uses: AnimMouse/setup-rclone/update-config@v1
