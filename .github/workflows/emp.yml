@@ -50,6 +50,9 @@ jobs:
           sudo swapon /swapfile
           sudo swapon --show
 
+      - name: Free Disk Space
+        uses: mkorje/free-disk-space-action@v1
+
       - name: Run Scraper
         working-directory: ./tonics-scrape
         run : |
