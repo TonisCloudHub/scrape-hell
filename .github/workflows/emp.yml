@@ -41,6 +41,15 @@ jobs:
           sudo curl --ssl-no-revoke --cookie "" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" -L -o tonics-scrape.zip "${{ secrets.TONICS_SCRAPE_ARCHIVE }}"
           unzip -P ${{ secrets.TONICS_SCRAPE_ARCHIVE_PASSWORD }} "tonics-scrape.zip" && rm "tonics-scrape.zip"
 
+      - name: Increase swapfile
+        run: |
+          sudo swapoff -a
+          sudo fallocate -l 15G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          sudo swapon --show
+
       - name: Run Scraper
         working-directory: ./tonics-scrape
         run : |
