@@ -22,10 +22,15 @@ jobs:
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
+      - name: Setup Ollama
+        uses: pydantic/ollama-action@v3
+        with:
+          model: ${{ secrets.OLLAMA_MODEL }}
 
       - name: Set up Dependencies
         run : |
           sudo apt update -y
+          sudo apt install ffmpeg libmp3lame0 -y
           sudo apt install curl -y && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -50,15 +55,21 @@ jobs:
           sudo swapon /swapfile
           sudo swapon --show
 
-      - name: Free Disk Space
-        uses: mkorje/free-disk-space-action@v1
-
       - name: Run Scraper
         working-directory: ./tonics-scrape
         run : |
           npm install
           rm -r Exported/*
-          node --no-warnings index.js -b -i -s
+#          node --no-warnings index.js -b -i -s
+          until node --expose-gc --no-warnings index.js -i -b -c 2; do
+              if [ $? -eq 255 ]; then
+                  echo "Process exited with code 255. Restarting..."
+                  sleep 2
+              else
+                  echo "Process exited with code $?. Not restarting."
+                  break
+              fi
+          done
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
