@@ -2,7 +2,7 @@ name: EMP SCRAPER - AfrobeatInstrumental_01
 on:
   push:
     paths:
-      - '.github/workflows/emp.yml'
+      - '.github/workflows/emp-afrobeat_instrumental_01.yml'
   schedule:
     - cron: '*/30 * * * *' # Every 30 minutes
 
@@ -49,7 +49,7 @@ jobs:
       - name: Increase swapfile
         run: |
           sudo swapoff -a
-          sudo fallocate -l 15G /swapfile
+          sudo fallocate -l 10G /swapfile
           sudo chmod 600 /swapfile
           sudo mkswap /swapfile
           sudo swapon /swapfile
