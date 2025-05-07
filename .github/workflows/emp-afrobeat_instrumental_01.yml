@@ -60,7 +60,6 @@ jobs:
         run : |
           npm install
           rm -r Exported/*
-#          node --no-warnings index.js -b -i -s
           until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -c 2; do
               if [ $? -eq 255 ]; then
                   echo "Process exited with code 255. Restarting..."
@@ -70,6 +69,7 @@ jobs:
                   break
               fi
           done
+
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
