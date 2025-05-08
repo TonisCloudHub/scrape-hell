@@ -39,7 +39,7 @@ jobs:
           nvm install 22
           node -v
           git config --global --add safe.directory /app
-          sudo apt install unzip chromium-browser -y
+          sudo apt install unzip -y
 
       - name: Download & Unzip Scraper
         run : |
