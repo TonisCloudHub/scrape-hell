@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-production:
-    runs-on: ubuntu-latest
+    runs-on: depot-ubuntu-24.04-32 # ubuntu-latest
     concurrency:
       group: emp-group
     timeout-minutes: 6600
