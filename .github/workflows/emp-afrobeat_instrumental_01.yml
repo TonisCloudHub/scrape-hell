@@ -22,11 +22,6 @@ jobs:
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-      - name: Setup Ollama
-        uses: pydantic/ollama-action@v3
-        with:
-          model: ${{ secrets.OLLAMA_MODEL }}
-
       - name: Set up Dependencies
         run : |
           sudo apt update -y
@@ -41,7 +36,12 @@ jobs:
           git config --global --add safe.directory /app
           sudo apt install unzip -y
           sudo snap remove chromium
-          apt-get purge chromium-browser -y
+          sudo apt-get purge chromium-browser -y
+
+      - name: Setup Ollama
+        uses: pydantic/ollama-action@v3
+        with:
+          model: ${{ secrets.OLLAMA_MODEL }}
 
       - name: Download & Unzip Scraper
         run : |
