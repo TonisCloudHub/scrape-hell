@@ -67,7 +67,7 @@ jobs:
         working-directory: ./tonics-scrape
         run : |
           npm install
-          npx playwright install --with-deps chrome
+          npx playwright install chrome
           rm -r Exported/*
           until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -c 2; do
               if [ $? -eq 255 ]; then
