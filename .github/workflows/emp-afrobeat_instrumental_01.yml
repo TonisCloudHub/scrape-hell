@@ -40,6 +40,8 @@ jobs:
           node -v
           git config --global --add safe.directory /app
           sudo apt install unzip -y
+          sudo snap remove chromium
+          apt-get purge chromium-browser -y
 
       - name: Download & Unzip Scraper
         run : |
@@ -67,6 +69,7 @@ jobs:
         working-directory: ./tonics-scrape
         run : |
           npm install
+          npx playwright install chrome
           rm -r Exported/*
           until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -c 2; do
               if [ $? -eq 255 ]; then
