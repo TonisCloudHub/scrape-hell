@@ -35,8 +35,6 @@ jobs:
           node -v
           git config --global --add safe.directory /app
           sudo apt install unzip -y
-          sudo snap remove chromium
-          sudo apt-get purge chromium-browser -y
 
       - name: Setup Ollama
         uses: pydantic/ollama-action@v3
@@ -71,7 +69,7 @@ jobs:
           npm install
           npx playwright install chrome
           rm -r Exported/*
-          until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -c 2; do
+          until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -s; do
               if [ $? -eq 255 ]; then
                   echo "Process exited with code 255. Restarting..."
                   sleep 2
