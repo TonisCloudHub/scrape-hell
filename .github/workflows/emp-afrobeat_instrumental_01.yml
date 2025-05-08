@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-production:
-    runs-on: depot-ubuntu-24.04-32 # ubuntu-latest
+    runs-on: depot-ubuntu-22.04-32 # ubuntu-latest
     concurrency:
       group: emp-group
     timeout-minutes: 6600
@@ -69,7 +69,7 @@ jobs:
           npm install
           npx playwright install chrome
           rm -r Exported/*
-          until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -b -c 3; do
+          until node --expose-gc --no-warnings index.js -o AfrobeatInstrumental_01 -i -b -c 2; do
               if [ $? -eq 255 ]; then
                   echo "Process exited with code 255. Restarting..."
                   sleep 2
